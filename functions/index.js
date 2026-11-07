@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({origin: true })); 
 
 app.use(express.json()); 
-app.use('/api/tasks', tasksRouter);
+app.use('/tasks', tasksRouter);
 
 
 exports.api = functions.https.onRequest(app); 

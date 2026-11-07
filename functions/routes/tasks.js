@@ -7,20 +7,16 @@ router.post('/', async (req,res) =>{
     try{
 
         const newTask = req.body ;  
-
-        const docRef = await db.collection('tasks').add(rawJson);
-
+        const docRef = await db.collection('tasks').add(newTask);
 
         res.status(201).json({
             success:true ,
             id: docRef.id
         });
 
+    } catch (error) {
 
-
-    } catch (error){
-
-       res.status(500).json({error:error.message });
+        res.status(500).json({error:error.message });
 
     }
 
@@ -29,4 +25,38 @@ router.post('/', async (req,res) =>{
 
 })
 
-exports = router ;
+
+router.get('/', async (req,res) =>{
+    try{
+
+    
+       const response = await db.collection('tasks').get();
+       const taskData = response.docs.map( task => {
+       const rawData = task.data();
+        
+       return {
+
+           id: task.id , 
+           clinicId: rawData.clinicId,
+           title: rawData.title
+            
+        };
+
+        });
+
+
+       res.status(200).json({
+            "success":true ,
+            "data": taskData
+        });
+
+    } catch (error){
+
+       res.status(500).json({error:error.message });
+
+    }
+
+
+})
+
+module.exports = router ;
