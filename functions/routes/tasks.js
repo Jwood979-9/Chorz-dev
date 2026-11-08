@@ -73,9 +73,18 @@ router.get('/', async (req,res) =>{
 
 router.put('/:id', async (req,res) =>{
     try{
+
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json({
+                success:false,
+                message: "Update payload cannot be empty"
+            });
+        }
         
         const taskId = req.params.id ;
         const newData = req.body ;
+        
+        
 
         const response = await db.collection('tasks').doc(`${taskId}`).update(newData);
     
