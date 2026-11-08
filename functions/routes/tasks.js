@@ -20,9 +20,6 @@ router.post('/', async (req,res) =>{
 
     }
 
-
-
-
 })
 
 
@@ -38,7 +35,9 @@ router.get('/', async (req,res) =>{
 
            id: task.id , 
            clinicId: rawData.clinicId,
-           title: rawData.title
+           title: rawData.title,
+           status: rawData.status
+           
             
         };
 
@@ -48,6 +47,29 @@ router.get('/', async (req,res) =>{
        res.status(200).json({
             "success":true ,
             "data": taskData
+        });
+
+    } catch (error){
+
+       res.status(500).json({error:error.message });
+
+    }
+
+
+})
+
+
+router.put('/:id', async (req,res) =>{
+    try{
+        
+        const taskId = req.params.id ;
+        const newData = req.body ;
+
+        const response = await db.collection('tasks').doc(`${taskId}`).update(newData);
+    
+       res.status(200).json({
+            "success":true ,
+            "message": "Task updated"
         });
 
     } catch (error){
