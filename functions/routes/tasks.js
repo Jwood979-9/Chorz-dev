@@ -6,7 +6,19 @@ const {db} = require('../config/firebase');
 router.post('/', async (req,res) =>{
     try{
 
-        const newTask = req.body ;  
+        const newTask = req.body ;
+        const exTitle =  newTask.title ; 
+        const exClinicId = newTask.clinicId ;   
+
+        if(!exClinicId || !exTitle ){
+           return res.status(400).json({
+            success: false,
+            message:"Missing required fields:"
+
+           });
+
+        }
+
         const docRef = await db.collection('tasks').add(newTask);
 
         res.status(201).json({
