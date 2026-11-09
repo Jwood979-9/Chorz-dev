@@ -49,8 +49,7 @@ router.get('/', async (req,res) =>{
            clinicId: rawData.clinicId,
            title: rawData.title,
            status: rawData.status
-           
-            
+                
         };
 
         });
