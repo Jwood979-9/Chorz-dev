@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function TaskForm() {
+export default function TaskForm({onTaskAdded}) {
  
   const [formData, setFormData] = useState({
     title: '',
@@ -37,6 +37,10 @@ export default function TaskForm() {
       
       
       setFormData({ title: '', clinicId: '', description: '' });
+
+      if (onTaskAdded) {
+        onTaskAdded();
+      }
 
     } catch (error) {
       console.error("Failed to submit task:", error.message);
