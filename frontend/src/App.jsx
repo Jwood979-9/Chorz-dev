@@ -45,7 +45,7 @@ const fetchTasks = async () => {
       <h1>Chorz Admin Dashboard</h1>
       <hr />
       
-     <TaskList tasks={tasks} />
+     <TaskList tasks={tasks} onTaskDeleted={fetchTasks} />
      <TaskForm onTaskAdded={fetchTasks} />
       <MyButton />
       
