@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import TaskList from './components/TaskList'; 
 import TaskForm from './components/TaskForm';
+import OutlinedCard from './components/TaskCard';
+
+import DonutChart from './components/PieChart';
+
 
 function MyButton(){
 
@@ -41,13 +45,17 @@ const fetchTasks = async () => {
 
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' , }}>
       <h1>Chorz Admin Dashboard</h1>
       <hr />
-      
-     <TaskList tasks={tasks} onTaskDeleted={fetchTasks} />
+      <div style={{display:'flex'}}>
+      <DonutChart tasks={tasks}  />
+    <TaskList tasks={tasks} onTaskDeleted={fetchTasks} />
+    </div>
+    <br />
      <TaskForm onTaskAdded={fetchTasks} />
       <MyButton />
+     
       
     </div>
   );

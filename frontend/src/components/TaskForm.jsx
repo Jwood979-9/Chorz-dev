@@ -5,7 +5,9 @@ export default function TaskForm({onTaskAdded}) {
   const [formData, setFormData] = useState({
     title: '',
     clinicId: '',
-    description: ''
+    description: '',
+    status: ''
+
   });
 
 
@@ -36,7 +38,7 @@ export default function TaskForm({onTaskAdded}) {
       console.log("Task submitted successfully!");
       
       
-      setFormData({ title: '', clinicId: '', description: '' });
+      setFormData({ title: '', clinicId: '', description: '', status:''});
 
       if (onTaskAdded) {
         onTaskAdded();
@@ -49,7 +51,7 @@ export default function TaskForm({onTaskAdded}) {
 
 
   return (
-    <div style={{ marginBottom: '40px', padding: '20px', border: '1px solid #ccc' }}>
+    <div style={{ width: 400, marginBottom: '40px', padding: '40px', border: '1px solid #ccc', borderRadius: '8px' }}>
       <h3>Create a New Task</h3>
       
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' }}>
@@ -66,6 +68,14 @@ export default function TaskForm({onTaskAdded}) {
           name="clinicId" 
           placeholder="Clinic ID (e.g., CL-104)" 
           value={formData.clinicId} 
+          onChange={handleChange} 
+          required 
+        />
+         <input 
+          type="text" 
+          name="status" 
+          placeholder="Status" 
+          value={formData.status} 
           onChange={handleChange} 
           required 
         />

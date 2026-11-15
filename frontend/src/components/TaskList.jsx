@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import TaskCard from './TaskCard';
+import OutlinedCard from './TaskCard';
+import Box from '@mui/material/Box';
 
 
 
@@ -24,7 +27,9 @@ export default function TaskList({tasks, onTaskDeleted}) {
 
        console.log(`Task ${taskid} was deleted successfully `)
 
-
+        if (onTaskDeleted) {
+        onTaskDeleted();
+      }
 
     } catch(error){
 
@@ -42,24 +47,31 @@ export default function TaskList({tasks, onTaskDeleted}) {
   return (
     <div>
       <h2>Chorz Task List</h2>
-      <ul>
+     <Box sx={{ 
+          border:'solid',
+          borderColor:'white',
+          borderRadius:'8px',
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '20px',
+          maxHeight: '600px', 
+          overflowY: 'auto',  
+          padding: '20px',
+          '&::-webkit-scrollbar': { 
+            display: 'none' 
+          }     
+        }}
+      >
+        
+        
         {tasks.map(task => (
-          <li key={task.id} style={{ backgroundColor: '#0d1321' ,  borderRadius: 8 , marginBottom: '15px', padding: '10px', border: '1px solid #eee', display: 'flex', justifyContent: 'space-between', maxWidth: '400px' }}>
-          <div>
-              <strong>{task.title}</strong> <br />
-              <small>Clinic: {task.clinicId}</small>
-            </div>
-            
-            
-            <button 
-              onClick={() => handleDelete(task.id)} 
-              style={{ borderRadius: 8 ,backgroundColor: '#e80707', color: 'white', border: 'none', cursor: 'pointer', padding: '5px 10px' }}
-            >
-              Delete
-            </button>
-          </li>
+          <OutlinedCard 
+            key={task.id} 
+            task={task} 
+            onDelete={handleDelete} 
+          />
         ))}
-      </ul>
+    </Box>
     </div>
   );
 }
