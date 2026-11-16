@@ -1,21 +1,29 @@
 const express = require('express');
 const router = express.Router();
-const {db} = require('../config/firebase');
+const { db } = require('../config/firebase');
+const { z } = require('zod');
+
+const taskSchema = z.object({
+    title: z.string().min(3).max(100),
+    clinicId: z.string().startsWith("CL-"),
+    status: z.enum(['completed', 'incomplete', 'pending'])
+});
 
 router.post('/', async (req, res) => {
     try {
-        const newTask = req.body;
-        const exTitle = newTask.title; 
-        const exClinicId = newTask.clinicId;   
+        const validation = taskSchema.safeParse(req.body);
 
-        if (!exClinicId || !exTitle) {
-           return res.status(400).json({
-            success: false,
-            message: "Missing required fields:"
-           });
+        if (!validation.success) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid task data",
+                errors: validation.error.format()
+            });
         }
 
-        const docRef = await db.collection('tasks').add(newTask);
+        const cleanTask = validation.data;
+        
+        const docRef = await db.collection('tasks').add(cleanTask);
 
         res.status(201).json({
             success: true,
