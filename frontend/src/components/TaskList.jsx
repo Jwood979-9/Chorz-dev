@@ -1,18 +1,33 @@
 import React from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import OutlinedCard from './TaskCard';
 import Box from '@mui/material/Box';
 
 export default function TaskList() {
   const queryClient = useQueryClient();
 
-  const { data: tasks, isLoading, isError, error } = useQuery({
+  const { 
+    data, 
+    isLoading, 
+    isError, 
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery({
     queryKey: ['tasks'],
-    queryFn: async () => {
-      const response = await fetch('http://127.0.0.1:5001/chorz-dev/us-central1/api/tasks');
+    initialPageParam: null,
+    queryFn: async ({ pageParam }) => {
+      let url = 'http://127.0.0.1:5001/chorz-dev/us-central1/api/tasks';
+      if (pageParam) {
+        url += `?cursor=${pageParam}`;
+      }
+      const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const taskData = await response.json();
-      return taskData.data || taskData;
+      return response.json();
+    },
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor || null;
     }
   });
 
@@ -36,6 +51,8 @@ export default function TaskList() {
 
   if (isLoading) return <div style={{color: 'white'}}>Loading Chorz Tasks...</div>;
   if (isError) return <div style={{color: 'red'}}>Error: {error.message}</div>;
+
+  const tasks = data ? data.pages.flatMap(page => page.data) : [];
 
   return (
     <div>
@@ -62,6 +79,16 @@ export default function TaskList() {
             onDelete={handleDelete} 
           />
         ))}
+        
+        {hasNextPage && (
+          <button 
+            onClick={() => fetchNextPage()} 
+            disabled={isFetchingNextPage}
+            style={{ padding: '10px', cursor: 'pointer', marginTop: '10px', backgroundColor: '#1976d2', color: 'white', border: 'none', borderRadius: '4px' }}
+          >
+            {isFetchingNextPage ? 'Loading...' : 'Load More Tasks'}
+          </button>
+        )}
       </Box>
     </div>
   );
