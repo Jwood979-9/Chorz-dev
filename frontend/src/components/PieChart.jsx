@@ -6,7 +6,7 @@ const settings = {
   margin: { right: 5 },
   width: 200,
   height: 200,
-  hideLegend: true,
+  hideLegend: false,
 };
 
 export default function DonutChart() {
@@ -32,6 +32,10 @@ export default function DonutChart() {
     <PieChart
       series={[{ innerRadius: 50, outerRadius: 100, data: chartData, arcLabel: 'value' }]}
       {...settings}
+      sx={{'& .MuiChartsLegend-series': {
+      color: 'white', 
+      }}
+    }
     />
   );
 }

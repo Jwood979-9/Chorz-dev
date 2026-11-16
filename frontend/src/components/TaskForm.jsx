@@ -7,7 +7,7 @@ export default function TaskForm() {
   const [formData, setFormData] = useState({
     title: '',
     clinicId: '',
-    description: '',
+    
     status: ''
   });
 
@@ -31,7 +31,7 @@ export default function TaskForm() {
       return response.json();
     },
     onSuccess: () => {
-      setFormData({ title: '', clinicId: '', description: '', status: '' });
+      setFormData({ title: '', clinicId: '',  status: '' });
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       queryClient.invalidateQueries({ queryKey: ['taskStats'] });
     },
@@ -74,13 +74,7 @@ export default function TaskForm() {
           onChange={handleChange} 
           required 
         />
-        <textarea 
-          name="description" 
-          placeholder="Task Description" 
-          value={formData.description} 
-          onChange={handleChange} 
-          required 
-        />
+        
         <button 
           type="submit" 
           disabled={mutation.isPending}
