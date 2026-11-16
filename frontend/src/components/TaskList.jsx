@@ -43,6 +43,7 @@ export default function TaskList() {
 
       console.log(`Task ${taskid} was deleted successfully `);
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['taskStats'] });
 
     } catch (error) {
       console.log("Failed to delete task", error.message);

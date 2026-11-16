@@ -33,6 +33,7 @@ export default function TaskForm() {
     onSuccess: () => {
       setFormData({ title: '', clinicId: '', description: '', status: '' });
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['taskStats'] });
     },
     onError: (error) => {
       console.error("Failed to submit task:", error.message);
