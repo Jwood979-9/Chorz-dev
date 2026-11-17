@@ -11,5 +11,5 @@ app.use(cors({origin: true }));
 app.use(express.json()); 
 app.use('/tasks', tasksRouter);
 
-
+exports.app = app;
 exports.api = functions.https.onRequest(app); 
